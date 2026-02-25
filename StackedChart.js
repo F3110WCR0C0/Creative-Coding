@@ -23,8 +23,8 @@ class StackedChart {
     this.cleanData();
     this.platformGrouping();
     this.drawAxis();
-    this.drawBars();
     this.drawLabels();
+    this.drawBars();
   }
 
   cleanData() {
@@ -37,6 +37,7 @@ class StackedChart {
     }
   }
 
+  // used ai to assist me here
   platformGrouping() {
     this.cleanedData.forEach((row) => {
       let platform = row.Platform;
@@ -64,47 +65,13 @@ class StackedChart {
     pop();
   }
 
-  drawBars() {
-    push();
-    translate(this.posX, this.posY);
-    let barWidth = this.chartWidth / this.platforms.length;
-
-    for (let i = 0; i < this.platforms.length; i++) {
-      let platform = this.platforms[i];
-      let data = this.platformData[platform];
-      let countHeight = map(
-        data.count,
-        0,
-        this.maxStackValue,
-        0,
-        this.chartHeight,
-      );
-      let scoreHeight = map(
-        data.score,
-        0,
-        this.maxStackValue,
-        0,
-        this.chartHeight,
-      );
-
-      fill(this.countColour);
-      rect(i * barWidth, 0, barWidth * 0.8, -countHeight);
-
-      fill(this.scoreColour);
-      rect(i * barWidth, 0, barWidth * 0.8, -scoreHeight);
-    }
-
-    pop();
-  }
-
   drawLabels() {
     push();
-    translate(this.posX, this.posY);
     noStroke();
     fill(this.labelColour);
     textAlign(CENTER);
     text(
-      "Critic score vs count for each platfrom",
+      "Critic score (Blue) vs count (Orange) for each platfrom",
       this.chartWidth / 2,
       -this.chartHeight - 25,
     );
@@ -131,20 +98,73 @@ class StackedChart {
     text(Math.round(maxValue), -5, -this.chartHeight);
 
     let barWidth = this.chartWidth / this.platforms.length;
+
     textAlign(CENTER, TOP);
+    pop();
+
+    push();
+    textAlign(CENTER);
+    translate(this.posX, this.posY);
     for (let i = 0; i < this.platforms.length; i++) {
-      text(this.platforms[i], i * barWidth + barWidth / 2, 10);
+      let platform = this.platforms[i];
+      let data = this.platformData[platform];
+      let countHeight = map(
+        data.count,
+        0,
+        this.maxStackValue,
+        0,
+        this.chartHeight,
+      );
+      let scoreHeight = map(
+        data.score,
+        0,
+        this.maxStackValue,
+        0,
+        this.chartHeight,
+      );
 
       text(
         Math.round(this.platformData[this.platforms[i]].count),
         i * barWidth + barWidth / 2,
-        -40,
+        -countHeight - 5,
       );
       text(
         Math.round(this.platformData[this.platforms[i]].score),
         i * barWidth + barWidth / 2,
-        -20,
+        -scoreHeight - 5,
       );
+    }
+    pop();
+  }
+
+  drawBars() {
+    push();
+    translate(this.posX, this.posY);
+    let barWidth = this.chartWidth / this.platforms.length;
+
+    for (let i = 0; i < this.platforms.length; i++) {
+      let platform = this.platforms[i];
+      let data = this.platformData[platform];
+      let countHeight = map(
+        data.count,
+        0,
+        this.maxStackValue,
+        0,
+        this.chartHeight,
+      );
+      let scoreHeight = map(
+        data.score,
+        0,
+        this.maxStackValue,
+        0,
+        this.chartHeight,
+      );
+
+      fill(this.scoreColour);
+      rect(i * barWidth, -1, barWidth, -scoreHeight);
+
+      fill(this.countColour);
+      rect(i * barWidth, -1, barWidth, -countHeight);
     }
 
     pop();

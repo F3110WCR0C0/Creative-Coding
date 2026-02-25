@@ -32,6 +32,7 @@ class LineChart {
     }
   }
 
+  // Used AI here
   salesPerYear() {
     this.salesByYear = {};
     for (let row of this.cleanedData) {

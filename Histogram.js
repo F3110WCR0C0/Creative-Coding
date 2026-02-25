@@ -47,26 +47,6 @@ class Histogram {
     pop();
   }
 
-  drawBars() {
-    let maxSale = max(this.platformSales);
-    let barWidth = this.chartWidth / this.platforms.length;
-    push();
-    translate(this.posX, this.posY);
-
-    fill(this.barColour);
-    for (let i = 0; i < this.platforms.length; i++) {
-      let barHeight = map(
-        this.platformSales[i],
-        0,
-        maxSale,
-        0,
-        this.chartHeight,
-      );
-      rect(i * barWidth, 0, barWidth * 0.8, -barHeight);
-    }
-    pop();
-  }
-
   drawLabels() {
     let minValue = 0;
     let maxValue = max(this.platformSales);
@@ -115,6 +95,26 @@ class Histogram {
       );
     }
 
+    pop();
+  }
+
+  drawBars() {
+    let maxSale = max(this.platformSales);
+    let barWidth = this.chartWidth / this.platforms.length;
+    push();
+    translate(this.posX, this.posY);
+
+    fill(this.barColour);
+    for (let i = 0; i < this.platforms.length; i++) {
+      let barHeight = map(
+        this.platformSales[i],
+        0,
+        maxSale,
+        0,
+        this.chartHeight,
+      );
+      rect(i * barWidth, -1, barWidth * 0.8, -barHeight);
+    }
     pop();
   }
 }
