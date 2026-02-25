@@ -49,7 +49,7 @@ class StackedChart {
     this.platforms = Object.keys(this.platformData);
     this.maxStackValue = max(
       this.platforms.map(
-        (p) => this.platformData[p].score + this.platformData[p].count,
+        (i) => this.platformData[i].score + this.platformData[i].count,
       ),
     );
   }
@@ -67,6 +67,7 @@ class StackedChart {
 
   drawLabels() {
     push();
+    translate(this.posX, this.posY);
     noStroke();
     fill(this.labelColour);
     textAlign(CENTER);
@@ -77,7 +78,7 @@ class StackedChart {
     );
 
     let values = this.platforms.map(
-      (p) => this.platformData[p].score + this.platformData[p].count,
+      (i) => this.platformData[i].score + this.platformData[i].count,
     );
     let minValue = 0;
     let maxValue = max(values);
@@ -100,6 +101,7 @@ class StackedChart {
     let barWidth = this.chartWidth / this.platforms.length;
 
     textAlign(CENTER, TOP);
+
     pop();
 
     push();
@@ -115,25 +117,20 @@ class StackedChart {
         0,
         this.chartHeight,
       );
-      let scoreHeight = map(
-        data.score,
-        0,
-        this.maxStackValue,
-        0,
-        this.chartHeight,
-      );
 
       text(
         Math.round(this.platformData[this.platforms[i]].count),
         i * barWidth + barWidth / 2,
-        -countHeight - 5,
+        -countHeight,
       );
       text(
         Math.round(this.platformData[this.platforms[i]].score),
         i * barWidth + barWidth / 2,
-        -scoreHeight - 5,
+        10,
       );
+      text(this.platforms[i], i * barWidth + barWidth / 2, 20);
     }
+
     pop();
   }
 
