@@ -40,7 +40,9 @@ class LineChart {
       if (!this.salesByYear[year]) this.salesByYear[year] = 0;
       this.salesByYear[year] += sales;
     }
-    this.sortedYears = Object.keys(this.salesByYear).map(Number).sort((a, b) => a - b);
+    this.sortedYears = Object.keys(this.salesByYear)
+      .map(Number)
+      .sort((a, b) => a - b);
     this.maxSales = max(Object.values(this.salesByYear));
   }
 
@@ -58,7 +60,6 @@ class LineChart {
   drawLines() {
     push();
     translate(this.posX, this.posY);
-
     stroke(this.barColour);
     strokeWeight(2);
     noFill();
@@ -103,15 +104,27 @@ class LineChart {
     fill(this.labelColour);
 
     textAlign(CENTER);
-    text("Yearly global sales (Millions)", this.chartWidth / 2, -this.chartHeight - 25);
+    text(
+      "Yearly games global sales (Millions)",
+      this.chartWidth / 2,
+      -this.chartHeight - 25,
+    );
 
     let minValue = 0;
     let maxValue = this.maxSales;
     textAlign(RIGHT, CENTER);
     text(Math.round(minValue), -5, 0);
-    text(Math.round((minValue + (minValue + maxValue) / 2) / 2), -5, -this.chartHeight * 0.25);
+    text(
+      Math.round((minValue + (minValue + maxValue) / 2) / 2),
+      -5,
+      -this.chartHeight * 0.25,
+    );
     text(Math.round((minValue + maxValue) / 2), -5, -this.chartHeight * 0.5);
-    text(Math.round(((minValue + maxValue) / 2 + maxValue) / 2), -5, -this.chartHeight * 0.75);
+    text(
+      Math.round(((minValue + maxValue) / 2 + maxValue) / 2),
+      -5,
+      -this.chartHeight * 0.75,
+    );
     text(Math.round(maxValue), -5, -this.chartHeight);
 
     textAlign(CENTER, TOP);
@@ -122,5 +135,4 @@ class LineChart {
     }
     pop();
   }
-
 }
