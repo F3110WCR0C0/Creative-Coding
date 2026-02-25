@@ -1,5 +1,5 @@
 class Histogram {
-  constructor(_data, _posX, _posY, _chartWidth, _chartHeight, _barWidth) {
+  constructor(_data, _posX, _posY, _chartWidth, _chartHeight) {
     this.data = _data;
     this.cleanedData = [];
     this.platforms = [];
@@ -8,7 +8,6 @@ class Histogram {
     this.posY = _posY;
     this.chartWidth = _chartWidth;
     this.chartHeight = _chartHeight;
-    this.barWidth = _barWidth;
 
     this.axisThickness = 2;
     this.barColour = "#00beff";
@@ -25,51 +24,67 @@ class Histogram {
 
   cleanData() {
     let salesMap = {};
-
     for (let i = 0; i < this.data.rows.length; i++) {
       let row = this.data.rows[i].obj;
-      row.Global_Sales = +row.Global_Sales; 
-      if (!salesMap[row.Platform]) {
-        salesMap[row.Platform] = 0;
-      }
+      row.Global_Sales = +row.Global_Sales;
+      if (!salesMap[row.Platform]) salesMap[row.Platform] = 0;
       salesMap[row.Platform] += row.Global_Sales;
     }
-
     this.platforms = Object.keys(salesMap);
     this.platformSales = Object.values(salesMap);
   }
 
   drawAxis() {
-    noFill();
+    push();
+    translate(this.posX, this.posY);
     stroke(this.axisColour);
     strokeWeight(this.axisThickness);
-    translate(this.posX, this.posY);
-    line(0, 0, this.chartWidth, 0); 
-    line(0, 0, 0, -this.chartHeight); 
+    noFill();
+    line(0, 0, this.chartWidth, 0);
+    line(0, 0, 0, -this.chartHeight);
+    pop();
   }
 
   drawBars() {
-    fill(this.barColour);
-    translate(this.posX, -1);
     let maxSale = max(this.platformSales);
+    let barWidth = this.chartWidth / this.platforms.length;
+    push();
+    translate(this.posX, this.posY);
+
+    fill(this.barColour);
     for (let i = 0; i < this.platforms.length; i++) {
       let barHeight = map(this.platformSales[i], 0, maxSale, 0, this.chartHeight);
-      rect(i * this.barWidth, 0, this.barWidth, -barHeight);
+      rect(i * barWidth, 0, barWidth * 0.8, -barHeight);
     }
+    pop();
   }
 
   drawLabels() {
+    let minValue = 0;
+    let maxValue = max(this.platformSales);
+    push();
+    translate(this.posX, this.posY);
     noStroke();
     fill(this.labelColour);
+
     textAlign(CENTER);
-    text("Global Sales per Platform (M Units)", this.chartWidth / 2, -this.chartHeight - 25);
+    text("Global Sales per Platform (Millions)", this.chartWidth / 2, -this.chartHeight - 25);
 
+    textAlign(RIGHT, CENTER);
+    text(Math.round(minValue), -5, 0);
+    text(Math.round((minValue + (minValue + maxValue) / 2) / 2), -5, -this.chartHeight * 0.25);
+    text(Math.round((minValue + maxValue) / 2), -5, -this.chartHeight * 0.5);
+    text(Math.round(((minValue + maxValue) / 2 + maxValue) / 2), -5, -this.chartHeight * 0.75);
+    text(Math.round(maxValue), -5, -this.chartHeight);
+
+    textAlign(CENTER, TOP);
+    let barWidth = this.chartWidth / this.platforms.length;
     for (let i = 0; i < this.platforms.length; i++) {
-      let maxSale = max(this.platformSales);
-      let barHeight = map(this.platformSales[i], 0, maxSale, 0, this.chartHeight);
-
-      text(this.platforms[i], i * this.barWidth + this.barWidth * 0.4, 20);
-      text(this.platformSales[i].toFixed(2), i * this.barWidth + this.barWidth * 0.4, -barHeight - 5);
+      let barHeight = map(this.platformSales[i], 0, maxValue, 0, this.chartHeight);
+      text(this.platforms[i], i * barWidth + barWidth / 2, 5);
+      text(Math.round(this.platformSales[i]), i * barWidth + barWidth / 2, -barHeight - 5);
     }
+
+    pop();
   }
 }

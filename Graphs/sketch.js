@@ -1,14 +1,8 @@
-// Kinda working currently
-// Pie Chart
-// Histogram
-// Filled bar chart
-
-
 let data;
 let histogram;
 
 let canvasWidth = 1920;
-let canvasHeight = 2500;
+let canvasHeight = 2100;
 
 // Avregae Data
 ///////////////////////////////////////////////////////////////////
@@ -28,12 +22,10 @@ function preload() {
 
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
-  histogram = new Histogram(data, 50, 500, 400, 400, 40);
-  stackedChart = new StackedChart(data, -50, 500, 400, 400, 40);
-  areaChart = new AreaChart(data, -50, 1000, 400, 400, 40);
-  lineChart = new LineChart(data, 500, 0, 400, 400, 40);
-  pieChart = new PieChart(data, -300, 450, 400, 300);
-  pieChart.render();
+  histogram = new Histogram(data, 50, 500, 1500, 400, 40);
+  stackedChart = new StackedChart(data, 50, 1000, 1500, 400, 40);
+  lineChart = new LineChart(data, 50, 1500, 1500, 400, 40);
+  pieChart = new PieChart(data, 250, 1800, 400);
   noLoop();
 }
 
@@ -41,7 +33,6 @@ function draw() {
   background(backgroundColour);
   histogram.render();
   stackedChart.render();
-  areaChart.render();
   lineChart.render();
   pieChart.render();
 }

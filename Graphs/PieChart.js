@@ -38,13 +38,13 @@ class PieChart {
     let total = this.values.reduce((a, b) => a + b, 0);
     let startAngle = 0;
 
+    stroke(1)
     translate(this.posX, this.posY);
 
     for (let i = 0; i < this.values.length; i++) {
       let angle = (this.values[i] / total) * TWO_PI;
 
       fill(this.sliceColours[i % this.sliceColours.length]);
-      noStroke();
       arc(0, 0, this.diameter, this.diameter, startAngle, startAngle + angle, PIE);
 
       startAngle += angle;
@@ -55,8 +55,11 @@ class PieChart {
     let total = this.values.reduce((a, b) => a + b, 0);
     let startAngle = 0;
 
+    noStroke();
     fill(0);
     textAlign(CENTER, CENTER);
+
+    text("Sales from different regions", 0, -this.diameter / 2 - 30);
 
     for (let i = 0; i < this.values.length; i++) {
       let angle = (this.values[i] / total) * TWO_PI;
