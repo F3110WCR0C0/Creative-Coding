@@ -92,7 +92,7 @@ class LineChart {
       noStroke();
       ellipse(x, y, 6, 6);
       fill(this.labelColour);
-      text(Math.round(sales), x, y - 8);
+      text(Math.round(sales), x, y - 10);
     }
 
     pop();
@@ -129,9 +129,9 @@ class LineChart {
     text(Math.round(maxValue), -5, -this.chartHeight);
 
     textAlign(CENTER, TOP);
-    for (let i = 0; i < this.sortedYears.length; i++) {
+    for (let i = 1; i < this.sortedYears.length; i++) {
       let year = this.sortedYears[i];
-      let x = map(i, 0, this.sortedYears.length - 1, 0, this.chartWidth);
+      let x = map(i, 1, this.sortedYears.length, 0, this.chartWidth);
       text(year, x, 5);
     }
     pop();
